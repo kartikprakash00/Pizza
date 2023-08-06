@@ -9,6 +9,7 @@ async function loadPizzas() {
     for (let pizza of Pizzas) {
         pizzaCard(pizza);
     }
+
 }
 loadPizzas();
 
@@ -33,6 +34,7 @@ function addtoCart() {
     console.log('Pizza ID is ', pizzaId);
     productOperations.search(pizzaId);
     printBasket();
+    totalAmmount();
 }
 
 function printBasket() {
@@ -44,6 +46,37 @@ function printBasket() {
         li.innerText = `${product.name}- $${product.price}`;
         basket.appendChild(li);
     }
+}
+let grandTotal = 0;
+function checkout() {
+    window.location.href = '/checkout.html';
+}
+async function totalAmmount() {
+    const Sum = document.getElementById('total');
+    Sum.style.display = 'flex';
+    Sum.style.flexDirection = 'column';
+    Sum.innerHTML = '';
+    const Pizzas = await productOperations.getProductsInCart();
+    let Total = 0;
+    for (let pizza of Pizzas) {
+        Total += +pizza.price;
+    }
+    const Tax = Total * 0.18;
+    const finalTax = document.createElement('p');
+    finalTax.innerText = `18% Tax: $${Tax.toFixed(2)}`;
+    grandTotal = Total * 1.18;
+    const gTotal = document.createElement('p');
+    gTotal.innerText = `Grand Total: $${grandTotal.toFixed(2)}`;
+    const total = document.createElement('p');
+    total.innerText = `Total: $${Total.toFixed(2)}`;
+    Sum.append(total);
+    Sum.append(finalTax);
+    Sum.append(gTotal);
+    const pay = document.createElement('button');
+    pay.addEventListener('click', checkout);
+    pay.className = 'btn btn-dark';
+    pay.innerText = 'Checkout';
+    Sum.append(pay);
 }
 
 function pizzaCard(pizza) {
