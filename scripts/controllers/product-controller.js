@@ -49,7 +49,7 @@ function printBasket() {
 }
 let grandTotal = 0;
 function checkout() {
-    window.location.href = '/checkout.html';
+    window.location.href = './checkout.html';
 }
 async function totalAmmount() {
     const Sum = document.getElementById('total');
